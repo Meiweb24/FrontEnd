@@ -13,12 +13,7 @@
             <a href="#products" className="btn btn--primary btn--lg">
               Comprar ahora
             </a>
-            <a href="#deals" className="btn btn--secondary btn--lg">
-              Ver ofertas
-            </a>
-            <a href="/" className="btn btn--secondary btn--lg">
-              Ir a Home
-            </a>
+            
           </div>
         </article>
         <aside className="hero__spotlight">
