@@ -25,6 +25,19 @@ function Storefront() {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [mobileColumns, setMobileColumns] = useState(2)
 
+  useEffect(() => {
+    const validCategoryIds = new Set(categories.map((category) => category.id))
+    const params = new URLSearchParams(window.location.search)
+    const categoryFromUrl = params.get('category')
+
+    if (categoryFromUrl && validCategoryIds.has(categoryFromUrl)) {
+      setActiveCategory(categoryFromUrl)
+      return
+    }
+
+    setActiveCategory('all')
+  }, [])
+
   const allowedProducts = products.filter((item) => (isAdmin ? true : !item.adminOnly))
 
   const filteredProducts = allowedProducts.filter((item) => {
@@ -73,7 +86,7 @@ function Storefront() {
     return first.name.localeCompare(second.name, 'es-CO')
   })
 
-  const featuredProducts = allowedProducts.filter((item) => item.featured).slice(0, 4)
+  const featuredProducts = filteredProducts.filter((item) => item.featured).slice(0, 4)
   const adminProducts = products.filter((item) => item.adminOnly)
 
   const addToCart = (productId) => {
