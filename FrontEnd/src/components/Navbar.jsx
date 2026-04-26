@@ -70,7 +70,7 @@ export default function Navbar({
             Contacto
           </a>
           {isAdmin ? (
-            <a href="#admin" className="nav-link nav-link--admin">
+            <a href="/admin" className="nav-link nav-link--admin">
               Panel Admin
             </a>
           ) : null}
@@ -101,8 +101,8 @@ export default function Navbar({
             <span className="cart-count">{cartCount}</span>
           </button>
 
-          <a href="#admin" className="user-button">
-            {isAdmin ? 'Admin' : 'Ingresar'}
+          <a href={isAdmin ? '/admin' : '#admin'} className="user-button">
+            {isAdmin ? 'Panel privado' : 'Ingresar'}
           </a>
 
           <button
@@ -138,7 +138,7 @@ export default function Navbar({
             Contacto
           </a>
           {isAdmin ? (
-            <a href="#admin" onClick={() => setMobileOpen(false)}>
+            <a href="/admin" onClick={() => setMobileOpen(false)}>
               Panel Admin
             </a>
           ) : null}

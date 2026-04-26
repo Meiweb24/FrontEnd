@@ -10,6 +10,9 @@ import DealsSection from './components/DealsSection'
 import CartDrawer from './components/CartDrawer'
 import ProductModal from './components/ProductModal'
 import CreativeLab from './components/CreativeLab'
+import FeatureShowcase from './components/FeatureShowcase'
+import AdminDashboard from './components/AdminDashboard'
+import SatisfactionForm from './components/SatisfactionForm'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { categories, products } from './data/products'
 import './App.css'
@@ -205,6 +208,7 @@ function Storefront() {
 
       <main>
         <Hero />
+        <FeatureShowcase products={allowedProducts} />
         <DealsSection
           products={allowedProducts}
           onAddToCart={addToCart}
@@ -276,6 +280,8 @@ function Storefront() {
           </div>
         </section>
 
+        <SatisfactionForm />
+
         <Login />
       </main>
 
@@ -285,6 +291,7 @@ function Storefront() {
 }
 
 function AppRouter() {
+  const { isAdmin } = useAuth()
   const [path, setPath] = useState(window.location.pathname)
 
   useEffect(() => {
@@ -293,6 +300,20 @@ function AppRouter() {
       setPath('/')
     }
   }, [path])
+
+  useEffect(() => {
+    if (path === '/admin' && !isAdmin) {
+      window.history.replaceState({}, '', '/tienda?auth=required#admin')
+      setPath('/tienda')
+
+      window.setTimeout(() => {
+        const target = document.getElementById('admin')
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 40)
+    }
+  }, [isAdmin, path])
 
   useEffect(() => {
     const onPopState = () => setPath(window.location.pathname)
@@ -335,6 +356,10 @@ function AppRouter() {
 
   if (path === '/tienda') {
     return <Storefront />
+  }
+
+  if (path === '/admin') {
+    return isAdmin ? <AdminDashboard /> : <Storefront />
   }
 
   return <CreativeLab />

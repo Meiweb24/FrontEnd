@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
     }
 
     setIsAdmin(false)
-    setAuthError('Credenciales invalidas. Prueba admin / 1234.')
+    setAuthError('Credenciales invalidas. Verifica e intenta nuevamente.')
     return false
   }
 
