@@ -1,6 +1,6 @@
 ﻿import { formatCOP } from '../utils/currency'
 
-export default function Recommendations({ products, onAddToCart, onOpenProduct }) {
+export default function Recommendations({ products, onAddToCart, onOpenProduct, onCategoryChange }) {
   return (
     <section className="section recommendations" id="recommendations">
       <div className="container">
@@ -27,7 +27,13 @@ export default function Recommendations({ products, onAddToCart, onOpenProduct }
                   />
                 </button>
                 <div>
-                  <p className="recommend-card__category">{item.categoryLabel}</p>
+                  <button
+                    type="button"
+                    className="recommend-card__category"
+                    onClick={() => onCategoryChange(item.category)}
+                  >
+                    {item.categoryLabel}
+                  </button>
                   <h3>{item.name}</h3>
                   <p>{item.tagline}</p>
                   <div className="recommend-card__bottom">

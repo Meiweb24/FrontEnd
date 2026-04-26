@@ -20,8 +20,8 @@ export default function CartDrawer({
       <aside className={`cart-drawer ${open ? 'cart-drawer--open' : ''}`} aria-hidden={!open}>
         <header className="cart-drawer__header">
           <h2>Tu carrito</h2>
-          <button type="button" className="btn btn--secondary btn--sm" onClick={onClose}>
-            Cerrar
+          <button type="button" className="cart-drawer__close" onClick={onClose} aria-label="Cerrar carrito">
+            ✕
           </button>
         </header>
 
