@@ -1,18 +1,34 @@
-# React + Vite
+﻿# Tech Hub Store (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern e-commerce UI for technology peripherals with category filtering, sticky navigation, product grids, and admin-only discount sections.
 
-Currently, two official plugins are available:
+## Admin Access
+- Username: `admin`
+- Password: `1234`
+- Password is validated by hash comparison (`src/utils/auth.js`), not plain-text storage.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run
+```bash
+npm run dev
+```
 
-## React Compiler
+## Build
+```bash
+npm run build
+```
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Safe `node_modules` Reinstall
+You can delete `node_modules` at any time. To restore everything without breaking Vite:
 
-Note: This will impact Vite dev & build performances.
+```bash
+npm run reinstall
+```
 
-## Expanding the ESLint configuration
+or run and start in one command:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm run reinstall:dev
+```
+
+These commands use `package-lock.json` to recreate the exact dependency tree.
+

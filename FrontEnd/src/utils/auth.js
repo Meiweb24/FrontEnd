@@ -12,5 +12,6 @@
 
 export const ADMIN_CREDENTIALS = {
   username: 'admin',
-  passwordHash: '5f0d2f6d',
+  passwordHash: 'fdc422fd',
 }
+
