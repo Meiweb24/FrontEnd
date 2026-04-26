@@ -1,6 +1,6 @@
 ﻿import { formatCOP } from '../utils/currency'
 
-export default function Recommendations({ products, onAddToCart }) {
+export default function Recommendations({ products, onAddToCart, onOpenProduct }) {
   return (
     <section className="section recommendations" id="recommendations">
       <div className="container">
@@ -16,14 +16,16 @@ export default function Recommendations({ products, onAddToCart }) {
           {products.length ? (
             products.map((item) => (
               <article key={item.id} className="recommend-card">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  loading="lazy"
-                  onError={(event) => {
-                    event.currentTarget.src = '/product-fallback.svg'
-                  }}
-                />
+                <button className="recommend-card__media" type="button" onClick={() => onOpenProduct(item)}>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    loading="lazy"
+                    onError={(event) => {
+                      event.currentTarget.src = '/product-fallback.svg'
+                    }}
+                  />
+                </button>
                 <div>
                   <p className="recommend-card__category">{item.categoryLabel}</p>
                   <h3>{item.name}</h3>

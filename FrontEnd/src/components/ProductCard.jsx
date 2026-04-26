@@ -4,11 +4,12 @@ export default function ProductCard({
   product,
   highlighted = false,
   onAddToCart,
+  onOpenProduct,
   quantityInCart = 0,
 }) {
   return (
     <article className={`product-card ${highlighted ? 'product-card--highlighted' : ''}`}>
-      <div className="product-card__media">
+      <button className="product-card__media" type="button" onClick={() => onOpenProduct(product)}>
         <img
           src={product.image}
           alt={product.name}
@@ -17,7 +18,7 @@ export default function ProductCard({
             event.currentTarget.src = '/product-fallback.svg'
           }}
         />
-      </div>
+      </button>
       <div className="product-card__content">
         <p className="product-card__category">{product.categoryLabel}</p>
         <h3>{product.name}</h3>

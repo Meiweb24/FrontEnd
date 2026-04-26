@@ -7,6 +7,7 @@ export default function ProductGrid({
   highlightAdmin = false,
   sectionId = 'products',
   onAddToCart,
+  onOpenProduct,
   quantityById = {},
 }) {
   return (
@@ -24,6 +25,7 @@ export default function ProductGrid({
                 product={item}
                 highlighted={highlightAdmin && item.adminOnly}
                 onAddToCart={onAddToCart}
+                onOpenProduct={onOpenProduct}
                 quantityInCart={quantityById[item.id] ?? 0}
               />
             ))

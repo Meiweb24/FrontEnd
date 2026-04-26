@@ -4,9 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/ensure-deps.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/ensure-deps.mjs",
     "build": "vite build",
+    "prelint": "node scripts/ensure-deps.mjs",
     "lint": "eslint .",
+    "prepreview": "node scripts/ensure-deps.mjs",
     "preview": "vite preview",
     "reinstall": "npm ci",
     "reinstall:dev": "npm ci && npm run dev"

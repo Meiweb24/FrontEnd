@@ -9,6 +9,7 @@ import Footer from './components/Footer'
 import DealsSection from './components/DealsSection'
 import Recommendations from './components/Recommendations'
 import CartDrawer from './components/CartDrawer'
+import ProductModal from './components/ProductModal'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { categories, products } from './data/products'
 import './App.css'
@@ -21,6 +22,7 @@ function Storefront() {
   const [cartOpen, setCartOpen] = useState(false)
   const [cartItems, setCartItems] = useState([])
   const [sortOption, setSortOption] = useState('featured')
+  const [selectedProduct, setSelectedProduct] = useState(null)
 
   const allowedProducts = useMemo(
     () => products.filter((item) => (isAdmin ? true : !item.adminOnly)),
@@ -223,6 +225,12 @@ function Storefront() {
         onDelete={removeLineFromCart}
       />
 
+      <ProductModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={addToCart}
+      />
+
       <main>
         <Hero />
         <DealsSection
@@ -231,33 +239,41 @@ function Storefront() {
           onCategoryChange={setActiveCategory}
         />
 
-        <CategoryMenu
-          categories={categories}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
-          sortOption={sortOption}
-          onSortChange={setSortOption}
-        />
+        <section className="products-zone">
+          <CategoryMenu
+            categories={categories}
+            activeCategory={activeCategory}
+            onCategoryChange={setActiveCategory}
+            sortOption={sortOption}
+            onSortChange={setSortOption}
+          />
 
-        <ProductGrid
-          title="Productos destacados"
-          description="Selecciones rapidas para comprar con confianza y rendimiento comprobado."
-          products={featuredProducts}
-          sectionId="featured"
-          onAddToCart={addToCart}
-          quantityById={quantityById}
-        />
+          <ProductGrid
+            title="Productos destacados"
+            description="Selecciones rapidas para comprar con confianza y rendimiento comprobado."
+            products={featuredProducts}
+            sectionId="featured"
+            onAddToCart={addToCart}
+            onOpenProduct={setSelectedProduct}
+            quantityById={quantityById}
+          />
 
-        <ProductGrid
-          title="Catalogo completo"
-          description="Explora por categoria con tarjetas claras y acciones de compra rapidas."
-          products={visibleProducts}
-          sectionId="products"
-          onAddToCart={addToCart}
-          quantityById={quantityById}
-        />
+          <ProductGrid
+            title="Catalogo completo"
+            description="Explora por categoria con tarjetas claras y acciones de compra rapidas."
+            products={visibleProducts}
+            sectionId="products"
+            onAddToCart={addToCart}
+            onOpenProduct={setSelectedProduct}
+            quantityById={quantityById}
+          />
 
-        <Recommendations products={recommendedProducts} onAddToCart={addToCart} />
+          <Recommendations
+            products={recommendedProducts}
+            onAddToCart={addToCart}
+            onOpenProduct={setSelectedProduct}
+          />
+        </section>
 
         {isAdmin ? <AdminBanner /> : null}
 
@@ -269,6 +285,7 @@ function Storefront() {
             highlightAdmin
             sectionId="admin-discounts"
             onAddToCart={addToCart}
+            onOpenProduct={setSelectedProduct}
             quantityById={quantityById}
           />
         ) : null}

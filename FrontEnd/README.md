@@ -12,6 +12,8 @@ Modern e-commerce UI for technology peripherals with category filtering, sticky 
 npm run dev
 ```
 
+If `node_modules` was deleted, `dev/build/lint/preview` now auto-runs `npm ci` before continuing.
+
 ## Build
 ```bash
 npm run build
