@@ -9,6 +9,7 @@ export default function ProductGrid({
   onAddToCart,
   onOpenProduct,
   quantityById = {},
+  mobileColumns = 2,
 }) {
   return (
     <section className="section" id={sectionId}>
@@ -17,7 +18,7 @@ export default function ProductGrid({
           <h2>{title}</h2>
           <p>{description}</p>
         </div>
-        <div className="product-grid">
+        <div className={`product-grid ${mobileColumns === 1 ? 'product-grid--mobile-1' : ''}`}>
           {products.length ? (
             products.map((item) => (
               <ProductCard

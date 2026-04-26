@@ -7,7 +7,6 @@ import Login from './components/Login'
 import AdminBanner from './components/AdminBanner'
 import Footer from './components/Footer'
 import DealsSection from './components/DealsSection'
-import Recommendations from './components/Recommendations'
 import CartDrawer from './components/CartDrawer'
 import ProductModal from './components/ProductModal'
 import { AuthProvider, useAuth } from './context/AuthContext'
@@ -23,6 +22,7 @@ function Storefront() {
   const [cartItems, setCartItems] = useState([])
   const [sortOption, setSortOption] = useState('featured')
   const [selectedProduct, setSelectedProduct] = useState(null)
+  const [mobileColumns, setMobileColumns] = useState(2)
 
   const allowedProducts = useMemo(
     () => products.filter((item) => (isAdmin ? true : !item.adminOnly)),
@@ -93,7 +93,7 @@ function Storefront() {
   }, [filteredProducts, sortOption])
 
   const featuredProducts = useMemo(
-    () => allowedProducts.filter((item) => item.featured).slice(0, 8),
+    () => allowedProducts.filter((item) => item.featured).slice(0, 4),
     [allowedProducts],
   )
 
@@ -173,7 +173,7 @@ function Storefront() {
     [cartDetailItems],
   )
 
-  const recommendedProducts = useMemo(() => {
+  const cartSuggestions = useMemo(() => {
     const sorted = allowedProducts
       .filter((item) => !cartIdSet.has(item.id))
       .sort((first, second) => {
@@ -191,7 +191,7 @@ function Storefront() {
         return first.price - second.price
       })
 
-    return sorted.slice(0, 6)
+    return sorted.slice(0, 2)
   }, [allowedProducts, cartCategoryWeights, cartIdSet])
 
   const quantityById = useMemo(() => {
@@ -219,6 +219,7 @@ function Storefront() {
         open={cartOpen}
         items={cartDetailItems}
         subtotal={cartSubtotal}
+        suggestions={cartSuggestions}
         onClose={() => setCartOpen(false)}
         onAdd={addToCart}
         onRemove={removeOneFromCart}
@@ -246,6 +247,8 @@ function Storefront() {
             onCategoryChange={setActiveCategory}
             sortOption={sortOption}
             onSortChange={setSortOption}
+            mobileColumns={mobileColumns}
+            onMobileColumnsChange={setMobileColumns}
           />
 
           <ProductGrid
@@ -256,6 +259,7 @@ function Storefront() {
             onAddToCart={addToCart}
             onOpenProduct={setSelectedProduct}
             quantityById={quantityById}
+            mobileColumns={mobileColumns}
           />
 
           <ProductGrid
@@ -266,12 +270,7 @@ function Storefront() {
             onAddToCart={addToCart}
             onOpenProduct={setSelectedProduct}
             quantityById={quantityById}
-          />
-
-          <Recommendations
-            products={recommendedProducts}
-            onAddToCart={addToCart}
-            onOpenProduct={setSelectedProduct}
+            mobileColumns={mobileColumns}
           />
         </section>
 
@@ -287,6 +286,7 @@ function Storefront() {
             onAddToCart={addToCart}
             onOpenProduct={setSelectedProduct}
             quantityById={quantityById}
+            mobileColumns={mobileColumns}
           />
         ) : null}
 

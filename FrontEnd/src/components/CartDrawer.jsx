@@ -4,6 +4,7 @@ export default function CartDrawer({
   open,
   items,
   subtotal,
+  suggestions,
   onClose,
   onAdd,
   onRemove,
@@ -57,6 +58,26 @@ export default function CartDrawer({
             <p className="empty-state">Tu carrito esta vacio.</p>
           )}
         </div>
+
+        {suggestions?.length ? (
+          <section className="cart-suggestions" aria-label="Sugeridos en carrito">
+            <h3>Sugeridos para complementar</h3>
+            <div className="cart-suggestions__list">
+              {suggestions.map((item) => (
+                <button key={item.id} type="button" className="cart-suggestion" onClick={() => onAdd(item.id)}>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    onError={(event) => {
+                      event.currentTarget.src = '/product-fallback.svg'
+                    }}
+                  />
+                  <span>{item.name}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <footer className="cart-drawer__footer">
           <p>
