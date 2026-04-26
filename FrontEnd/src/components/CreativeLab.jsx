@@ -17,7 +17,7 @@ export default function CreativeLab() {
             <a href="/tienda" className="btn btn--primary btn--lg">
               Entrar a la tienda
             </a>
-            <a href="/tienda#deals" className="btn btn--secondary btn--lg">
+            <a href="/tienda?view=offers#deals" className="btn btn--secondary btn--lg">
               Ir a ofertas
             </a>
           </div>
@@ -76,20 +76,7 @@ export default function CreativeLab() {
   </div>
 </section>
 
-      <section className="lab-feature">
-        <div className="container lab-feature__inner">
-          <div>
-            <h2>Home pensado para compra real</h2>
-            <p>
-              Navega a la tienda completa, explora ofertas activas y encuentra equipos
-              por categoria con una interfaz enfocada en conversion y velocidad.
-            </p>
-          </div>
-          <a href="/tienda" className="btn btn--primary btn--md">
-            Entrar al catalogo
-          </a>
-        </div>
-      </section>
+      
     </main>
   )
 }

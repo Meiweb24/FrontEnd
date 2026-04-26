@@ -7,6 +7,9 @@ export default function ProductCard({
   onOpenProduct,
   quantityInCart = 0,
 }) {
+  const hasDiscount =
+    Number.isFinite(product.originalPrice) && Number(product.originalPrice) > Number(product.price)
+
   return (
     <article className={`product-card ${highlighted ? 'product-card--highlighted' : ''}`}>
       <button className="product-card__media" type="button" onClick={() => onOpenProduct(product)}>
@@ -20,13 +23,18 @@ export default function ProductCard({
         />
       </button>
       <div className="product-card__content">
-        <p className="product-card__category">{product.categoryLabel}</p>
+        <div className="product-card__meta">
+          <p className="product-card__category">{product.categoryLabel}</p>
+          <span className={`discount-pill ${hasDiscount ? 'discount-pill--on' : ''}`}>
+            {hasDiscount ? 'En descuento' : 'Precio regular'}
+          </span>
+        </div>
         <h3>{product.name}</h3>
         <p className="product-card__tagline">{product.tagline}</p>
         <div className="product-card__bottom">
           <div className="product-card__price">
             <strong>{formatCOP(product.price)}</strong>
-            {product.originalPrice ? <span>{formatCOP(product.originalPrice)}</span> : null}
+            {hasDiscount ? <span>{formatCOP(product.originalPrice)}</span> : null}
           </div>
           <button type="button" className="btn btn--primary btn--sm" onClick={() => onAddToCart(product.id)}>
             Agregar

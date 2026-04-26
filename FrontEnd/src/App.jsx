@@ -24,22 +24,67 @@ function Storefront() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
   const [cartItems, setCartItems] = useState([])
+  const [cartLoaded, setCartLoaded] = useState(false)
   const [sortOption, setSortOption] = useState('featured')
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [mobileColumns, setMobileColumns] = useState(2)
+  const cartStorageKey = isAdmin ? 'techhub_cart_admin' : 'techhub_cart_guest'
 
   useEffect(() => {
     const validCategoryIds = new Set(categories.map((category) => category.id))
     const params = new URLSearchParams(window.location.search)
     const categoryFromUrl = params.get('category')
+    const viewFromUrl = params.get('view')
 
     if (categoryFromUrl && validCategoryIds.has(categoryFromUrl)) {
       setActiveCategory(categoryFromUrl)
-      return
+    } else {
+      setActiveCategory('all')
     }
 
-    setActiveCategory('all')
+    if (viewFromUrl === 'offers') {
+      setSortOption('discount')
+    }
+
+    const hash = window.location.hash.replace('#', '')
+    if (hash) {
+      window.setTimeout(() => {
+        const target = document.getElementById(hash)
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 80)
+    }
   }, [])
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(cartStorageKey)
+      if (!saved) {
+        setCartItems([])
+        setCartLoaded(true)
+        return
+      }
+      const parsed = JSON.parse(saved)
+      const normalized = Array.isArray(parsed)
+        ? parsed
+            .filter((item) => Number.isInteger(item?.id) && Number.isInteger(item?.quantity))
+            .map((item) => ({ id: item.id, quantity: Math.max(1, item.quantity) }))
+        : []
+      setCartItems(normalized)
+    } catch (_error) {
+      setCartItems([])
+    } finally {
+      setCartLoaded(true)
+    }
+  }, [cartStorageKey])
+
+  useEffect(() => {
+    if (!cartLoaded) {
+      return
+    }
+    window.localStorage.setItem(cartStorageKey, JSON.stringify(cartItems))
+  }, [cartItems, cartLoaded, cartStorageKey])
 
   const allowedProducts = products.filter((item) => (isAdmin ? true : !item.adminOnly))
 

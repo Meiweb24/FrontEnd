@@ -15,8 +15,7 @@ const teamMembers = [
     role: 'Ingenieria de Sistemas',
     semester: '5to semestre',
     email: 'diego2241691@correo.uis.edu.co',
-    photo:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80',
+    photo: '/team/diego.jpeg',
   },
   {
     id: 'jeh',
@@ -32,8 +31,7 @@ const teamMembers = [
     role: 'Ingenieria de Sistemas',
     semester: '5to semestre',
     email: 'juan2241545@correo.uis.edu.co',
-    photo:
-      'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?auto=format&fit=crop&w=500&q=80',
+    photo: '/team/salazar.jpeg',
   },
 ]
 
