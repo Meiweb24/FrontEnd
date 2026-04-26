@@ -1,4 +1,6 @@
-﻿export default function ProductCard({
+﻿import { formatCOP } from '../utils/currency'
+
+export default function ProductCard({
   product,
   highlighted = false,
   onAddToCart,
@@ -7,7 +9,14 @@
   return (
     <article className={`product-card ${highlighted ? 'product-card--highlighted' : ''}`}>
       <div className="product-card__media">
-        <img src={product.image} alt={product.name} loading="lazy" />
+        <img
+          src={product.image}
+          alt={product.name}
+          loading="lazy"
+          onError={(event) => {
+            event.currentTarget.src = '/product-fallback.svg'
+          }}
+        />
       </div>
       <div className="product-card__content">
         <p className="product-card__category">{product.categoryLabel}</p>
@@ -15,14 +24,14 @@
         <p className="product-card__tagline">{product.tagline}</p>
         <div className="product-card__bottom">
           <div className="product-card__price">
-            <strong>${product.price}</strong>
-            {product.originalPrice ? <span>${product.originalPrice}</span> : null}
+            <strong>{formatCOP(product.price)}</strong>
+            {product.originalPrice ? <span>{formatCOP(product.originalPrice)}</span> : null}
           </div>
           <button type="button" className="btn btn--primary btn--sm" onClick={() => onAddToCart(product.id)}>
-            Add to cart
+            Agregar
           </button>
         </div>
-        {quantityInCart > 0 ? <p className="in-cart-note">In cart: {quantityInCart}</p> : null}
+        {quantityInCart > 0 ? <p className="in-cart-note">En carrito: {quantityInCart}</p> : null}
       </div>
     </article>
   )

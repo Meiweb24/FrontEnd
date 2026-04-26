@@ -1,12 +1,14 @@
-﻿export default function Recommendations({ products, onAddToCart }) {
+﻿import { formatCOP } from '../utils/currency'
+
+export default function Recommendations({ products, onAddToCart }) {
   return (
     <section className="section recommendations" id="recommendations">
       <div className="container">
         <div className="section-heading">
-          <h2>Smart Recommendations</h2>
+          <h2>Recomendaciones inteligentes</h2>
           <p>
             Priorizadas segun tu carrito, categoria activa y productos destacados para
-            que compres mas rapido sin perder tiempo.
+            que compres mas rapido y con mejor combinacion.
           </p>
         </div>
 
@@ -14,26 +16,33 @@
           {products.length ? (
             products.map((item) => (
               <article key={item.id} className="recommend-card">
-                <img src={item.image} alt={item.name} loading="lazy" />
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  loading="lazy"
+                  onError={(event) => {
+                    event.currentTarget.src = '/product-fallback.svg'
+                  }}
+                />
                 <div>
                   <p className="recommend-card__category">{item.categoryLabel}</p>
                   <h3>{item.name}</h3>
                   <p>{item.tagline}</p>
                   <div className="recommend-card__bottom">
-                    <strong>${item.price}</strong>
+                    <strong>{formatCOP(item.price)}</strong>
                     <button
                       type="button"
                       className="btn btn--primary btn--sm"
                       onClick={() => onAddToCart(item.id)}
                     >
-                      Add
+                      Agregar
                     </button>
                   </div>
                 </div>
               </article>
             ))
           ) : (
-            <p className="empty-state">Ya agregaste todo. Revisa Deals para nuevas ofertas.</p>
+            <p className="empty-state">Ya agregaste todo. Revisa Ofertas para nuevas oportunidades.</p>
           )}
         </div>
       </div>

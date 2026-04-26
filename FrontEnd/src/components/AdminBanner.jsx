@@ -1,11 +1,11 @@
 ﻿export default function AdminBanner() {
   return (
-    <section className="admin-banner" aria-label="Admin offers">
+    <section className="admin-banner" aria-label="Ofertas para admin">
       <div className="container admin-banner__inner">
-        <h2>Exclusive Deals</h2>
+        <h2>Ofertas exclusivas</h2>
         <p>
-          Admin-only inventory unlocked. Use these blocks to publish Hidden Discounts
-          and limited campaign pricing.
+          Inventario privado desbloqueado. Desde aqui puedes publicar descuentos
+          ocultos y precios especiales por campana.
         </p>
       </div>
     </section>

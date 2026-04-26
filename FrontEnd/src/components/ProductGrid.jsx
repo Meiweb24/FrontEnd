@@ -28,7 +28,7 @@ export default function ProductGrid({
               />
             ))
           ) : (
-            <p className="empty-state">No products found for the selected filters.</p>
+            <p className="empty-state">No encontramos productos para esos filtros.</p>
           )}
         </div>
       </div>

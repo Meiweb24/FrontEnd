@@ -20,13 +20,14 @@ function Storefront() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
   const [cartItems, setCartItems] = useState([])
+  const [sortOption, setSortOption] = useState('featured')
 
   const allowedProducts = useMemo(
     () => products.filter((item) => (isAdmin ? true : !item.adminOnly)),
     [isAdmin],
   )
 
-  const visibleProducts = useMemo(() => {
+  const filteredProducts = useMemo(() => {
     return allowedProducts.filter((item) => {
       const passCategory = activeCategory === 'all' || item.category === activeCategory
       const passSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
@@ -35,15 +36,66 @@ function Storefront() {
     })
   }, [activeCategory, allowedProducts, searchTerm])
 
+  const visibleProducts = useMemo(() => {
+    const sorted = [...filteredProducts]
+
+    if (sortOption === 'az') {
+      sorted.sort((first, second) => first.name.localeCompare(second.name, 'es-CO'))
+      return sorted
+    }
+
+    if (sortOption === 'za') {
+      sorted.sort((first, second) => second.name.localeCompare(first.name, 'es-CO'))
+      return sorted
+    }
+
+    if (sortOption === 'price-asc') {
+      sorted.sort((first, second) => first.price - second.price)
+      return sorted
+    }
+
+    if (sortOption === 'price-desc') {
+      sorted.sort((first, second) => second.price - first.price)
+      return sorted
+    }
+
+    if (sortOption === 'discount') {
+      sorted.sort((first, second) => {
+        const firstDiscount =
+          first.originalPrice && first.originalPrice > first.price
+            ? (first.originalPrice - first.price) / first.originalPrice
+            : 0
+        const secondDiscount =
+          second.originalPrice && second.originalPrice > second.price
+            ? (second.originalPrice - second.price) / second.originalPrice
+            : 0
+
+        if (secondDiscount !== firstDiscount) {
+          return secondDiscount - firstDiscount
+        }
+
+        return first.name.localeCompare(second.name, 'es-CO')
+      })
+      return sorted
+    }
+
+    sorted.sort((first, second) => {
+      if (first.featured !== second.featured) {
+        return Number(second.featured) - Number(first.featured)
+      }
+
+      return first.name.localeCompare(second.name, 'es-CO')
+    })
+
+    return sorted
+  }, [filteredProducts, sortOption])
+
   const featuredProducts = useMemo(
-    () => visibleProducts.filter((item) => item.featured).slice(0, 4),
-    [visibleProducts],
+    () => allowedProducts.filter((item) => item.featured).slice(0, 8),
+    [allowedProducts],
   )
 
-  const adminProducts = useMemo(
-    () => products.filter((item) => item.adminOnly),
-    [],
-  )
+  const adminProducts = useMemo(() => products.filter((item) => item.adminOnly), [])
 
   const addToCart = (productId) => {
     const exists = allowedProducts.some((item) => item.id === productId)
@@ -137,7 +189,7 @@ function Storefront() {
         return first.price - second.price
       })
 
-    return sorted.slice(0, 4)
+    return sorted.slice(0, 6)
   }, [allowedProducts, cartCategoryWeights, cartIdSet])
 
   const quantityById = useMemo(() => {
@@ -183,11 +235,13 @@ function Storefront() {
           categories={categories}
           activeCategory={activeCategory}
           onCategoryChange={setActiveCategory}
+          sortOption={sortOption}
+          onSortChange={setSortOption}
         />
 
         <ProductGrid
-          title="Featured Products"
-          description="Fast picks for shoppers who need trusted performance now."
+          title="Productos destacados"
+          description="Selecciones rapidas para comprar con confianza y rendimiento comprobado."
           products={featuredProducts}
           sectionId="featured"
           onAddToCart={addToCart}
@@ -195,8 +249,8 @@ function Storefront() {
         />
 
         <ProductGrid
-          title="Product Grid"
-          description="Browse by category with clear cards and quick purchase actions."
+          title="Catalogo completo"
+          description="Explora por categoria con tarjetas claras y acciones de compra rapidas."
           products={visibleProducts}
           sectionId="products"
           onAddToCart={addToCart}
@@ -209,8 +263,8 @@ function Storefront() {
 
         {isAdmin ? (
           <ProductGrid
-            title="Admin Discounts"
-            description="Hidden discounts for controlled campaigns and private clients."
+            title="Descuentos de administracion"
+            description="Bloques ocultos para campanas privadas y clientes especiales."
             products={adminProducts}
             highlightAdmin
             sectionId="admin-discounts"
@@ -222,14 +276,14 @@ function Storefront() {
         <section className="section promo-cta">
           <div className="container promo-cta__inner">
             <div>
-              <h2>Need curated setup recommendations?</h2>
+              <h2>Necesitas recomendaciones personalizadas?</h2>
               <p>
-                Share your use case and receive a personalized peripherals bundle in
-                under 24 hours.
+                Cuentanos tu caso de uso y te preparamos un bundle de perifericos ideal
+                para trabajo, estudio o gaming.
               </p>
             </div>
             <a href="#contact" className="btn btn--primary btn--md">
-              Request Consultation
+              Pedir asesoria
             </a>
           </div>
         </section>

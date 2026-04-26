@@ -1,27 +1,27 @@
 ﻿export default function Hero() {
   return (
-    <section className="hero" aria-label="Featured promotion">
+    <section className="hero" aria-label="Promocion destacada">
       <div className="container hero__grid">
         <article className="hero__main">
-          <p className="eyebrow">Special offers for high-performance setups</p>
-          <h1>Upgrade Your Desk With Precision Tech</h1>
+          <p className="eyebrow">Ofertas especiales para setups de alto rendimiento</p>
+          <h1>Sube de nivel tu escritorio con tecnologia precisa</h1>
           <p>
-            Discover premium keyboards, low-latency mice, immersive headsets, and
-            displays engineered for creators and gamers.
+            Descubre teclados premium, mouse de baja latencia, headsets inmersivos y
+            monitores pensados para creadores y gamers.
           </p>
           <div className="hero__actions">
             <a href="#products" className="btn btn--primary btn--lg">
-              Shop Now
+              Comprar ahora
             </a>
             <a href="#deals" className="btn btn--secondary btn--lg">
-              View Deals
+              Ver ofertas
             </a>
           </div>
         </article>
         <aside className="hero__spotlight">
-          <span className="hero__badge">Black Friday Early Access</span>
-          <h2>Save up to 40%</h2>
-          <p>Tech Hub drops new bundles every week with priority stock alerts.</p>
+          <span className="hero__badge">Acceso anticipado</span>
+          <h2>Ahorra hasta 40%</h2>
+          <p>Tech Hub lanza nuevos bundles cada semana con alertas de stock prioritario.</p>
         </aside>
       </div>
     </section>

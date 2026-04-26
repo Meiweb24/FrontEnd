@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
     }
 
     setIsAdmin(false)
-    setAuthError('Invalid credentials. Try admin / 1234.')
+    setAuthError('Credenciales invalidas. Prueba admin / 1234.')
     return false
   }
 
@@ -45,7 +45,7 @@ export function useAuth() {
   const context = useContext(AuthContext)
 
   if (!context) {
-    throw new Error('useAuth must be used inside AuthProvider')
+    throw new Error('useAuth debe usarse dentro de AuthProvider')
   }
 
   return context

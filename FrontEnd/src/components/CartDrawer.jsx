@@ -1,4 +1,6 @@
-﻿export default function CartDrawer({
+﻿import { formatCOP } from '../utils/currency'
+
+export default function CartDrawer({
   open,
   items,
   subtotal,
@@ -18,7 +20,7 @@
         <header className="cart-drawer__header">
           <h2>Tu carrito</h2>
           <button type="button" className="btn btn--secondary btn--sm" onClick={onClose}>
-            Close
+            Cerrar
           </button>
         </header>
 
@@ -26,10 +28,16 @@
           {items.length ? (
             items.map((item) => (
               <article key={item.id} className="cart-item">
-                <img src={item.image} alt={item.name} />
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  onError={(event) => {
+                    event.currentTarget.src = '/product-fallback.svg'
+                  }}
+                />
                 <div>
                   <h3>{item.name}</h3>
-                  <p>${item.price} c/u</p>
+                  <p>{formatCOP(item.price)} c/u</p>
                   <div className="cart-item__controls">
                     <button type="button" onClick={() => onRemove(item.id)}>
                       -
@@ -39,7 +47,7 @@
                       +
                     </button>
                     <button type="button" className="cart-item__remove" onClick={() => onDelete(item.id)}>
-                      Remove
+                      Quitar
                     </button>
                   </div>
                 </div>
@@ -52,10 +60,10 @@
 
         <footer className="cart-drawer__footer">
           <p>
-            Subtotal <strong>${subtotal}</strong>
+            Subtotal <strong>{formatCOP(subtotal)}</strong>
           </p>
           <button type="button" className="btn btn--primary btn--md">
-            Checkout
+            Finalizar compra
           </button>
         </footer>
       </aside>

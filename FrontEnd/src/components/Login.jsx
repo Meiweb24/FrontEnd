@@ -22,11 +22,11 @@ export default function Login() {
         <div className="container">
           <div className="login-card login-card--active">
             <div>
-              <h2>Admin Mode Enabled</h2>
-              <p>Exclusive Deals and Admin Discounts are now visible.</p>
+              <h2>Modo admin activado</h2>
+              <p>Ya puedes ver ofertas exclusivas y descuentos de administracion.</p>
             </div>
             <button type="button" className="btn btn--secondary" onClick={logout}>
-              Logout
+              Cerrar sesion
             </button>
           </div>
         </div>
@@ -39,26 +39,26 @@ export default function Login() {
       <div className="container">
         <div className="login-card">
           <div>
-            <h2>Admin Login</h2>
-            <p>Access special pricing modules and hidden discount blocks.</p>
+            <h2>Ingreso admin</h2>
+            <p>Accede a modulos de precio especial y bloques de descuento oculto.</p>
           </div>
           <form className="login-form" onSubmit={handleSubmit}>
             <input
               type="text"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
-              placeholder="Username"
+              placeholder="Usuario"
               autoComplete="username"
             />
             <input
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="Password"
+              placeholder="Contrasena"
               autoComplete="current-password"
             />
             <button type="submit" className="btn btn--primary">
-              Login
+              Ingresar
             </button>
           </form>
           {authError ? <p className="login-error">{authError}</p> : null}
