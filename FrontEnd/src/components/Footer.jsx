@@ -7,8 +7,7 @@ const teamMembers = [
     role: 'Ingenieria de Sistemas',
     semester: '5to semestre',
     email: 'juan2240046@correo.uis.edu.co',
-    photo:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80',
+    photo: '/team/manu.jpeg',
   },
   {
     id: 'dr',
@@ -25,15 +24,14 @@ const teamMembers = [
     role: 'Ingenieria de Sistemas',
     semester: '5to semestre',
     email: 'juan2240045@correo.uis.edu.co',
-    photo:
-      'https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=500&q=80',
+    photo: '/team/juanes.jpeg',
   },
   {
     id: 'jds',
     name: 'Juan David Salazar Pedrozo',
     role: 'Ingenieria de Sistemas',
     semester: '5to semestre',
-    email: '',
+    email: 'juan2241545@correo.uis.edu.co',
     photo:
       'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?auto=format&fit=crop&w=500&q=80',
   },
@@ -69,11 +67,7 @@ export default function Footer() {
               <p>
                 {activeMember.role} - {activeMember.semester}
               </p>
-              {activeMember.email ? (
-                <a href={`mailto:${activeMember.email}`}>{activeMember.email}</a>
-              ) : (
-                <span>Correo pendiente de compartir</span>
-              )}
+              <a href={`mailto:${activeMember.email}`}>{activeMember.email}</a>
             </div>
           </article>
         </div>

@@ -100,23 +100,27 @@ export default function FeatureShowcase({ products }) {
         <div className="feature-media">
           <article className="feature-card feature-card--media fade-in-up">
             <h3>Video y sonido</h3>
-            <video
-              controls
-              preload="metadata"
-              poster="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80"
-              className="feature-video"
-            >
-              <source
-                src="https://cdn.coverr.co/videos/coverr-man-typing-on-a-keyboard-1579/1080p.mp4"
-                type="video/mp4"
+            <div className="feature-video-embed">
+              <iframe
+                src="https://www.youtube.com/embed/wTQvBorRx88"
+                title="Video sobre perifericos"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
               />
-            </video>
+            </div>
+            <p className="feature-media-note">
+              Video incrustado desde YouTube con tu seleccion sobre perifericos.
+            </p>
+
             <audio controls preload="metadata" className="feature-audio">
-              <source
-                src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3"
-                type="audio/mpeg"
-              />
+              <source src="/media/demo.mp3" type="audio/mpeg" />
+              Tu navegador no soporta audio HTML5.
             </audio>
+            <p className="feature-media-note">
+              Audio ambiente de setup para acompanar la experiencia de navegacion.
+            </p>
             <p className="feature-dropcap">
               Nuestro catalogo prioriza claridad visual, contraste y jerarquia para
               facilitar decisiones de compra rapidas en cualquier dispositivo.
