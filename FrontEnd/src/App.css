@@ -1,5 +1,9 @@
-﻿.app-shell {
+.app-shell {
   min-height: 100vh;
+}
+
+.app-shell main {
+  padding-top: 84px;
 }
 
 .container {
@@ -47,9 +51,11 @@
 }
 
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 30;
+  left: 0;
+  width: 100%;
+  z-index: 80;
   border-bottom: 1px solid #ececec;
   backdrop-filter: blur(8px);
   background: color-mix(in srgb, var(--color-secondary) 98%, transparent);
@@ -423,7 +429,7 @@
 }
 
 .mobile-layout-toggle {
-  display: inline-flex;
+  display: none;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   overflow: hidden;
@@ -1144,6 +1150,115 @@
   text-underline-offset: 3px;
 }
 
+.lab-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 20%, #fff4c9 0%, transparent 34%),
+    radial-gradient(circle at 88% 15%, #e8f5ff 0%, transparent 35%),
+    #ffffff;
+}
+
+.lab-hero {
+  padding: clamp(70px, 11vw, 130px) 0;
+}
+
+.lab-hero__inner {
+  text-align: center;
+  max-width: 860px;
+}
+
+.lab-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  color: #616161;
+}
+
+.lab-hero h1 {
+  margin: 14px 0;
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  line-height: 1.02;
+}
+
+.lab-hero p {
+  margin: 0 auto;
+  max-width: 65ch;
+  color: #4f4f4f;
+}
+
+.lab-actions {
+  margin-top: var(--space-4);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.lab-strip {
+  padding-bottom: clamp(60px, 8vw, 90px);
+}
+
+.lab-strip__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.lab-card {
+  grid-column: span 4;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: clamp(18px, 3vw, 26px);
+}
+
+.lab-card h2 {
+  margin: 0;
+}
+
+.lab-card p {
+  margin: 8px 0 0;
+  color: #4a4a4a;
+}
+
+.lab-card--keyboard {
+  background: linear-gradient(135deg, #fee2e2, #fff);
+}
+
+.lab-card--mouse {
+  background: linear-gradient(135deg, #dbeafe, #fff);
+}
+
+.lab-card--audio {
+  background: linear-gradient(135deg, #f3e8ff, #fff);
+}
+
+.lab-feature {
+  padding-bottom: clamp(70px, 10vw, 110px);
+}
+
+.lab-feature__inner {
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: #111;
+  color: #fff;
+  padding: clamp(20px, 5vw, 42px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lab-feature h2 {
+  margin: 0;
+}
+
+.lab-feature p {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 64ch;
+}
+
 @media (max-width: 1100px) {
   .product-card {
     grid-column: span 4;
@@ -1218,9 +1333,22 @@
   .product-modal__media {
     min-height: 260px;
   }
+
+  .lab-card {
+    grid-column: 1 / -1;
+  }
+
+  .lab-feature__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 640px) {
+  .app-shell main {
+    padding-top: 74px;
+  }
+
   .navbar__inner {
     min-height: 74px;
   }
@@ -1232,6 +1360,30 @@
 
   .product-card {
     grid-column: span 6;
+  }
+
+  .product-card__content {
+    padding: 12px;
+  }
+
+  .product-card h3 {
+    font-size: 1rem;
+    margin: 8px 0 6px;
+  }
+
+  .product-card__tagline {
+    font-size: 0.86rem;
+    min-height: 2.2em;
+  }
+
+  .product-card__bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .product-card__bottom .btn {
+    width: 100%;
   }
 
   .product-grid--mobile-1 .product-card {
@@ -1261,4 +1413,9 @@
   .sort-control select {
     min-width: 150px;
   }
+
+  .mobile-layout-toggle {
+    display: inline-flex;
+  }
 }
+

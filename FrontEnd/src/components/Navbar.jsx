@@ -29,19 +29,22 @@ export default function Navbar({
   cartOpen,
 }) {
   const { isAdmin } = useAuth()
-  const activeCategoryLabel = categories.find((item) => item.id === activeCategory)?.label ?? 'All'
+  const activeCategoryLabel = categories.find((item) => item.id === activeCategory)?.label ?? 'Todo'
 
   return (
     <header className="navbar" id="home">
       <div className="container navbar__inner">
-        <a className="brand" href="#home">
+        <a className="brand" href="/">
           <span>Tech</span>
           <span className="brand__hub">Hub</span>
         </a>
 
         <nav className="desktop-nav" aria-label="Navegacion principal">
-          <a href="#home" className="nav-link nav-link--active">
-            Inicio
+          <a href="/" className="nav-link">
+            Home
+          </a>
+          <a href="/tienda" className="nav-link nav-link--active">
+            Tienda
           </a>
           <div className="nav-dropdown">
             <button className="nav-link" type="button">
@@ -122,8 +125,11 @@ export default function Navbar({
         aria-hidden={!mobileOpen}
       >
         <nav className="mobile-drawer__content" aria-label="Navegacion movil">
-          <a href="#home" onClick={() => setMobileOpen(false)}>
-            Inicio
+          <a href="/" onClick={() => setMobileOpen(false)}>
+            Home
+          </a>
+          <a href="/tienda" onClick={() => setMobileOpen(false)}>
+            Tienda
           </a>
           <a href="#deals" onClick={() => setMobileOpen(false)}>
             Ofertas

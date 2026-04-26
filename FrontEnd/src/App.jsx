@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import CategoryMenu from './components/CategoryMenu'
@@ -9,6 +9,7 @@ import Footer from './components/Footer'
 import DealsSection from './components/DealsSection'
 import CartDrawer from './components/CartDrawer'
 import ProductModal from './components/ProductModal'
+import CreativeLab from './components/CreativeLab'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { categories, products } from './data/products'
 import './App.css'
@@ -24,80 +25,56 @@ function Storefront() {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [mobileColumns, setMobileColumns] = useState(2)
 
-  const allowedProducts = useMemo(
-    () => products.filter((item) => (isAdmin ? true : !item.adminOnly)),
-    [isAdmin],
-  )
+  const allowedProducts = products.filter((item) => (isAdmin ? true : !item.adminOnly))
 
-  const filteredProducts = useMemo(() => {
-    return allowedProducts.filter((item) => {
-      const passCategory = activeCategory === 'all' || item.category === activeCategory
-      const passSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
+  const filteredProducts = allowedProducts.filter((item) => {
+    const passCategory = activeCategory === 'all' || item.category === activeCategory
+    const passSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
 
-      return passCategory && passSearch
-    })
-  }, [activeCategory, allowedProducts, searchTerm])
+    return passCategory && passSearch
+  })
 
-  const visibleProducts = useMemo(() => {
-    const sorted = [...filteredProducts]
-
+  const visibleProducts = [...filteredProducts].sort((first, second) => {
     if (sortOption === 'az') {
-      sorted.sort((first, second) => first.name.localeCompare(second.name, 'es-CO'))
-      return sorted
+      return first.name.localeCompare(second.name, 'es-CO')
     }
 
     if (sortOption === 'za') {
-      sorted.sort((first, second) => second.name.localeCompare(first.name, 'es-CO'))
-      return sorted
+      return second.name.localeCompare(first.name, 'es-CO')
     }
 
     if (sortOption === 'price-asc') {
-      sorted.sort((first, second) => first.price - second.price)
-      return sorted
+      return first.price - second.price
     }
 
     if (sortOption === 'price-desc') {
-      sorted.sort((first, second) => second.price - first.price)
-      return sorted
+      return second.price - first.price
     }
 
     if (sortOption === 'discount') {
-      sorted.sort((first, second) => {
-        const firstDiscount =
-          first.originalPrice && first.originalPrice > first.price
-            ? (first.originalPrice - first.price) / first.originalPrice
-            : 0
-        const secondDiscount =
-          second.originalPrice && second.originalPrice > second.price
-            ? (second.originalPrice - second.price) / second.originalPrice
-            : 0
+      const firstDiscount =
+        first.originalPrice && first.originalPrice > first.price
+          ? (first.originalPrice - first.price) / first.originalPrice
+          : 0
+      const secondDiscount =
+        second.originalPrice && second.originalPrice > second.price
+          ? (second.originalPrice - second.price) / second.originalPrice
+          : 0
 
-        if (secondDiscount !== firstDiscount) {
-          return secondDiscount - firstDiscount
-        }
-
-        return first.name.localeCompare(second.name, 'es-CO')
-      })
-      return sorted
+      if (secondDiscount !== firstDiscount) {
+        return secondDiscount - firstDiscount
+      }
     }
 
-    sorted.sort((first, second) => {
-      if (first.featured !== second.featured) {
-        return Number(second.featured) - Number(first.featured)
-      }
+    if (first.featured !== second.featured) {
+      return Number(second.featured) - Number(first.featured)
+    }
 
-      return first.name.localeCompare(second.name, 'es-CO')
-    })
+    return first.name.localeCompare(second.name, 'es-CO')
+  })
 
-    return sorted
-  }, [filteredProducts, sortOption])
-
-  const featuredProducts = useMemo(
-    () => allowedProducts.filter((item) => item.featured).slice(0, 4),
-    [allowedProducts],
-  )
-
-  const adminProducts = useMemo(() => products.filter((item) => item.adminOnly), [])
+  const featuredProducts = allowedProducts.filter((item) => item.featured).slice(0, 4)
+  const adminProducts = products.filter((item) => item.adminOnly)
 
   const addToCart = (productId) => {
     const exists = allowedProducts.some((item) => item.id === productId)
@@ -134,71 +111,52 @@ function Storefront() {
     setCartItems((prev) => prev.filter((item) => item.id !== productId))
   }
 
-  const cartDetailItems = useMemo(() => {
-    return cartItems
-      .map((entry) => {
-        const product = allowedProducts.find((item) => item.id === entry.id)
+  const cartDetailItems = cartItems
+    .map((entry) => {
+      const product = allowedProducts.find((item) => item.id === entry.id)
 
-        if (!product) {
-          return null
-        }
+      if (!product) {
+        return null
+      }
 
-        return {
-          ...product,
-          quantity: entry.quantity,
-        }
-      })
-      .filter(Boolean)
-  }, [allowedProducts, cartItems])
+      return {
+        ...product,
+        quantity: entry.quantity,
+      }
+    })
+    .filter(Boolean)
 
-  const cartCount = useMemo(
-    () => cartDetailItems.reduce((total, item) => total + item.quantity, 0),
-    [cartDetailItems],
-  )
+  const cartCount = cartDetailItems.reduce((total, item) => total + item.quantity, 0)
+  const cartSubtotal = cartDetailItems.reduce((total, item) => total + item.price * item.quantity, 0)
 
-  const cartSubtotal = useMemo(
-    () => cartDetailItems.reduce((total, item) => total + item.price * item.quantity, 0),
-    [cartDetailItems],
-  )
+  const cartCategoryWeights = cartDetailItems.reduce((accumulator, item) => {
+    const current = accumulator[item.category] ?? 0
+    return { ...accumulator, [item.category]: current + item.quantity }
+  }, {})
 
-  const cartCategoryWeights = useMemo(() => {
-    return cartDetailItems.reduce((accumulator, item) => {
-      const current = accumulator[item.category] ?? 0
-      return { ...accumulator, [item.category]: current + item.quantity }
-    }, {})
-  }, [cartDetailItems])
+  const cartIdSet = new Set(cartDetailItems.map((item) => item.id))
 
-  const cartIdSet = useMemo(
-    () => new Set(cartDetailItems.map((item) => item.id)),
-    [cartDetailItems],
-  )
+  const cartSuggestions = [...allowedProducts]
+    .filter((item) => !cartIdSet.has(item.id))
+    .sort((first, second) => {
+      const firstWeight = cartCategoryWeights[first.category] ?? 0
+      const secondWeight = cartCategoryWeights[second.category] ?? 0
 
-  const cartSuggestions = useMemo(() => {
-    const sorted = allowedProducts
-      .filter((item) => !cartIdSet.has(item.id))
-      .sort((first, second) => {
-        const firstWeight = cartCategoryWeights[first.category] ?? 0
-        const secondWeight = cartCategoryWeights[second.category] ?? 0
+      if (secondWeight !== firstWeight) {
+        return secondWeight - firstWeight
+      }
 
-        if (secondWeight !== firstWeight) {
-          return secondWeight - firstWeight
-        }
+      if (second.featured !== first.featured) {
+        return Number(second.featured) - Number(first.featured)
+      }
 
-        if (second.featured !== first.featured) {
-          return Number(second.featured) - Number(first.featured)
-        }
+      return first.price - second.price
+    })
+    .slice(0, 2)
 
-        return first.price - second.price
-      })
-
-    return sorted.slice(0, 2)
-  }, [allowedProducts, cartCategoryWeights, cartIdSet])
-
-  const quantityById = useMemo(() => {
-    return cartDetailItems.reduce((accumulator, item) => {
-      return { ...accumulator, [item.id]: item.quantity }
-    }, {})
-  }, [cartDetailItems])
+  const quantityById = cartDetailItems.reduce((accumulator, item) => {
+    return { ...accumulator, [item.id]: item.quantity }
+  }, {})
 
   return (
     <div className="app-shell">
@@ -313,10 +271,66 @@ function Storefront() {
   )
 }
 
+function AppRouter() {
+  const [path, setPath] = useState(window.location.pathname)
+
+  useEffect(() => {
+    if (path === '/lab') {
+      window.history.replaceState({}, '', '/')
+      setPath('/')
+    }
+  }, [path])
+
+  useEffect(() => {
+    const onPopState = () => setPath(window.location.pathname)
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  useEffect(() => {
+    const intercept = (event) => {
+      const anchor = event.target.closest('a[href^="/"]')
+      if (!anchor) {
+        return
+      }
+      const href = anchor.getAttribute('href')
+      if (!href || href.startsWith('//') || anchor.target === '_blank') {
+        return
+      }
+      event.preventDefault()
+      window.history.pushState({}, '', href)
+      setPath(window.location.pathname)
+
+      const hashIndex = href.indexOf('#')
+      const hash = hashIndex >= 0 ? href.slice(hashIndex + 1) : ''
+
+      if (hash) {
+        window.setTimeout(() => {
+          const target = document.getElementById(hash)
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }, 40)
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    }
+
+    document.addEventListener('click', intercept)
+    return () => document.removeEventListener('click', intercept)
+  }, [])
+
+  if (path === '/tienda') {
+    return <Storefront />
+  }
+
+  return <CreativeLab />
+}
+
 export default function App() {
   return (
     <AuthProvider>
-      <Storefront />
+      <AppRouter />
     </AuthProvider>
   )
 }
