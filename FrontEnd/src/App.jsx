@@ -14,6 +14,7 @@ import FeatureShowcase from './components/FeatureShowcase'
 import AdminDashboard from './components/AdminDashboard'
 import SatisfactionForm from './components/SatisfactionForm'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { ProductProvider } from './context/ProductContext'
 import { categories, products } from './data/products'
 import './App.css'
 
@@ -413,7 +414,9 @@ function AppRouter() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppRouter />
+      <ProductProvider>
+        <AppRouter />
+      </ProductProvider>
     </AuthProvider>
   )
 }
